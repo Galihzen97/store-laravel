@@ -39,6 +39,14 @@
               </div>
             </div>
           </div>
+          <div class="col-md-4">
+            <div class="card mb-2">
+              <div class="card-body">
+                <div class="dashboard-card-title">Product</div>
+                <div class="dashboard-card-subtitle">{{$product}}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

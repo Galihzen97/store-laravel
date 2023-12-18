@@ -11,7 +11,23 @@
                 margin-right: 10px;
             }
         }
+        .btn-login {
+            border-radius: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            background: transparent;
+            color: gray; /* Warna teks diubah menjadi putih agar kontras dengan latar belakang */
+            border: 1px solid #ff8c00; /* Initial gradient border */
+
+            &:hover {
+                background: linear-gradient(90deg, #ff8c00, #4a90e2);
+                border: 1px solid linear-gradient(90deg, #ff8c00, #4a90e2); /* Initial gradient border */
+                transition: ease-in-out;
+                color: white;
+            }
+        }
     }
+
     .profile-picture {
         max-height: 45px;
     }
@@ -22,13 +38,13 @@
         border-radius: 58%;
         font-size: 10px;
         text-align: center;
-        background: #29A867;
+        background: #29a867;
         color: #efefef;
         margin-left: -10px;
     }
 }
 
 .navbar-fixed-top.scrolled {
-    background-color: #fff !important;
+    background-color: #29a867 !important;
     transition: background-color 200ms linear;
 }

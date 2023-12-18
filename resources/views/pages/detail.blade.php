@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    Galih Store | Detail Page
+    Jual {{ $product->name}}
 @endsection
 @section('content')
 <div class="page-content page-details">
@@ -11,7 +11,7 @@
                   <nav>
                       <ol class="breadcrumb">
                           <li class="breadcrumb-item">
-                              <a href="/index.html">Home</a>
+                              <a href="/">Home</a>
                           </li>
                           <li class="breadcrumb-item active">
                               Products Detail
@@ -49,12 +49,26 @@
           <div class="container">
               <div class="row">
                   <div class="col-lg-8">
-                      <h1>Sofa Ternyaman</h1>
-                      <div class="owner"> By Galih Zen Salim</div>
-                      <div class="price">Rp. 8.000.000</div>
+                      <h1>{{$product->name}}</h1>
+                      <div class="owner">{{$product->user->store_name}}</div>
+                      <div class="price">Rp. {{ number_format($product->price, 0)}}</div>
                   </div>
                   <div class="col-lg-2" data-aos="zoom-in">
-                      <a href="{{ Route('cart')}}" class="btn btn-success px-4 text-white mb-3 btn-block">Add to Cart</a>
+                    @auth
+                    <form action="{{ Route('detail-add', $product->id)}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <button class="btn btn-success px-4 text-white mb-3 btn-block"
+                        type="submit"
+                        >
+                        Add to Cart
+
+                        </button>
+                    </form>  
+                    @else
+                        <a href="{{ Route('login')}} " class="btn btn-success px-4 text-white mb-3 btn-block">
+                            Sign in to Add
+                        </a>
+                    @endauth
                   </div>
               </div>
           </div>
@@ -63,9 +77,7 @@
           <div class="container ">
               <div class="row ">
                   <div class="col-12 col-lg-8 ">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates quos atque fugit molestiae ad provident impedit a natus eos amet.</p>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla officia quis exercitationem sapiente molestias accusamus incidunt et, necessitatibus iure suscipit hic blanditiis dolore! Dignissimos culpa perspiciatis aperiam,
-                          ipsam, voluptates, iure explicabo dolor labore non dolorum asperiores? Est officiis placeat error.</p>
+                    {!! $product->description !!}
                   </div>
               </div>
           </div>
@@ -122,19 +134,16 @@
         },
         data: {
             activePhoto: 0,
-            photos: [{
-                id: 1,
-                url: "/images/detail.jpg "
-            }, {
-                id: 2,
-                url: "/images/detail2.jpg "
-            }, {
-                id: 3,
-                url: "/images/detail3.jpg "
-            }, {
-                id: 4,
-                url: "/images/detail4.jpg "
-            }, ],
+            photos: [
+                @foreach ($product->galleries as $gallery)
+                {
+                    
+                    id: {{ $gallery->id}},
+                    url: " {{ Storage::url($gallery->photos)}}"
+                },
+                @endforeach
+                
+            ],
         },
         methods: {
             changeActive(id) {

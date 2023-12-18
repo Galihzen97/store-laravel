@@ -1,8 +1,12 @@
 .component-categories {
     background: #f4f4f4;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 20px 20px 10px 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    @include media-breakpoint-down(sm) {
+        background: transparent;
+        padding: 5px 5px 0px 5px;
+    }
     transition: all 0.2s ease-in-out;
     &:hover {
         transform: scale(1.05);
@@ -10,9 +14,13 @@
     }
     .categories-text {
         color: #0c0d36;
-        font-size: 18px;
+        font-size: 14px;
         text-align: center;
         font-weight: normal;
         margin-top: 12px;
+        @include media-breakpoint-down(sm) {
+            font-size: 10px;
+            margin-top: 5px;
+        }
     }
 }

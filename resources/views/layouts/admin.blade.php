@@ -36,10 +36,16 @@
               Dashboard
             </a>
             <a
-              class="list-group-item list-group-item-action"
-              href"#"
+              class="list-group-item list-group-item-action {{ request()->is('admin/product') ? 'active' : ''}}"
+              href="{{ Route('product.index')}}"
             >
-              Products
+              Product
+            </a>
+            <a
+              class="list-group-item list-group-item-action {{ request()->is('admin/product-gallery*') ? 'active' : ''}}"
+              href="{{ Route('product-gallery.index')}}"
+            >
+              Gallery
             </a>
             <a
               class="list-group-item list-group-item-action {{ request()->is('admin/category*') ? 'active' : ''}}"
@@ -54,17 +60,17 @@
               Transactions
             </a>
             <a
-              class="list-group-item list-group-item-action"
-              href="#"
+              class="list-group-item list-group-item-action {{ request()->is('admin/user*') ? 'active' : ''}}"
+              href="{{ Route('user.index')}}"
             >
               Users
             </a>
-            <a
-              class="list-group-item list-group-item-action"
-              href="{{ Route ('home')}}"
-            >
-              Sign Out
-            </a>
+            <a href="{{ route('logout') }}"
+                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                         class="list-group-item list-group-item-action">Logout</a>
+                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                          @csrf
+                      </form> 
           </div>
         </div>
 
@@ -102,11 +108,16 @@
                         class="rounded-circle mr-2 profile-picture"
                         alt=""
                       />
-                      Hi, Galih Zen
+                      Halo, {{ Auth::user()->name}}
                     </a>
                     <div class="dropdown-menu">
                       <div class="dropdown-divider"></div>
-                      <a href="{{ Route ('logout')}}" class="dropdown-item">Logout</a>
+                      <a href="{{ route('logout') }}"
+                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                         class="dropdown-item">Logout</a>
+                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                          @csrf
+                      </form> 
                     </div>
                   </li>
                 </ul>
@@ -123,7 +134,12 @@
                       >Hi, Galih Zen <b>></b></a
                     >
                     <div class="dropdown-menu">
-                      <a href="{{ Route('logout')}}" class="dropdown-item">Logout</a>
+                      <a href="{{ route('logout') }}"
+                      onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                      class="dropdown-item">Logout</a>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                       @csrf
+                   </form> 
                     </div>
                   </li>
                 </ul>
@@ -164,8 +180,7 @@
               toastr.success('{{ Session::get('success') }}');
           @endif
       });
-
-  </script>
+    </script>
     @stack('addon-script')
   </body>
 </html>

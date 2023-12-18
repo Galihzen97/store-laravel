@@ -21,7 +21,7 @@
                   <table id="crudTable" class="table table-hover scroll-horizontal-vertical w-100">
                     <thead>
                       <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Foto</th>
                         <th>Slug</th>
@@ -52,7 +52,15 @@
           url : '{!! url()->current() !!}', 
         },    
           columns : [
-            { data: 'id', name : 'id'},
+            {
+              data: 'id',
+              name: 'id',
+
+              width : '3%',
+              render: function (data, type, row, meta) {
+                  return meta.row + 1;
+              }
+            },
             { data: 'name', name : 'name'},
             { data: 'photo', name : 'photo'},
             { data: 'slug', name : 'slug'},
@@ -61,7 +69,7 @@
               name : 'action',
               orderrable :false,
               scarcable: false,
-              width : '15%',
+              width : '10%',
             },
           ]
       });

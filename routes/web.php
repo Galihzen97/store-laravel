@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductGalleryController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,38 +20,58 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index'])->name('categories');
+Route::get('/categories/{id}', [App\Http\Controllers\CategoryController::class, 'detail'])->name('categories-detail');
 Route::get('/details/{id}', [App\Http\Controllers\DetailController::class, 'index'])->name('detail');
-Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart');
-Route::get('/success', [App\Http\Controllers\CartController::class, 'success'])->name('success');
+Route::post('/details/{id}', [App\Http\Controllers\DetailController::class, 'add'])->name('detail-add');
+
+
+Route::post('/checkout/callback', [App\Http\Controllers\CheckoutController::class, 'callback'])->name('midtrans-callback'); 
+
+Route::get('/success', [App\Http\Controllers\CartController::class, 'success'])->name('success'); 
 
 Route::get('/register/success', [App\Http\Controllers\Auth\RegisterController::class, 'success'])->name('register-success');
 
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart');
+    Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'delete'])->name('cart-delete');
+    Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout'); 
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/products', [App\Http\Controllers\DashboardProductController::class, 'index'])
+        ->name('dashboard-products');
+    Route::get('/dashboard/products/create', [App\Http\Controllers\DashboardProductController::class, 'create'])
+        ->name('dashboard-products-add');
+    Route::post('/dashboard/products/store', [App\Http\Controllers\DashboardProductController::class, 'store'])
+        ->name('dashboard-products-store');
+    Route::get('/dashboard/products/{id}', [App\Http\Controllers\DashboardProductController::class, 'details'])
+        ->name('dashboard-products-details');
+    Route::post('/dashboard/products/{id}', [App\Http\Controllers\DashboardProductController::class, 'update'])
+        ->name('dashboard-products-update');
 
-Route::get('/dashboard/products', [App\Http\Controllers\DashboardProductController::class, 'index'])
-    ->name('dashboard-products');
-Route::get('/dashboard/products/create', [App\Http\Controllers\DashboardProductController::class, 'create'])
-    ->name('dashboard-products-add');
-Route::get('/dashboard/products/{id}', [App\Http\Controllers\DashboardProductController::class, 'details'])
-    ->name('dashboard-products-details');
+    Route::post('/dashboard/products/gallery/upload', [App\Http\Controllers\DashboardProductController::class, 'uploadGallery'])
+        ->name('dashboard-products-gallery-upload');
+    Route::get('/dashboard/products/gallery/delete/{id}', [App\Http\Controllers\DashboardProductController::class, 'deleteGallery'])
+        ->name('dashboard-products-gallery-delete');
+    Route::get('/dashboard/transactions', [App\Http\Controllers\DashboardTransactionsController::class, 'index'])
+        ->name('dashboard-transactions');
+    Route::get('/dashboard/transactions/{id}', [App\Http\Controllers\DashboardTransactionsController::class, 'details'])
+        ->name('dashboard-transactions-details');
 
-Route::get('/dashboard/transactions', [App\Http\Controllers\DashboardTransactionsController::class, 'index'])
-    ->name('dashboard-transactions');
-Route::get('/dashboard/transactions/{id}', [App\Http\Controllers\DashboardTransactionsController::class, 'details'])
-    ->name('dashboard-transactions-details');
-
-Route::get('/dashboard/setting', [App\Http\Controllers\DashboardSettingController::class, 'store'])
-    ->name('dashboard-setting-store');
-Route::get('/dashboard/account', [App\Http\Controllers\DashboardSettingController::class, 'account'])
-    ->name('dashboard-setting-account');
-
-    // ->middleware('auth', 'admin')
-Route::prefix('admin')
+    Route::get('/dashboard/setting', [App\Http\Controllers\DashboardSettingController::class, 'store'])
+        ->name('dashboard-setting-store');
+    Route::get('/dashboard/account', [App\Http\Controllers\DashboardSettingController::class, 'account'])
+        ->name('dashboard-setting-account');
+    Route::post('/dashboard/account/{redirect}', [App\Http\Controllers\DashboardSettingController::class, 'update'])
+        ->name('dashboard-setting-redirect');
+});
+//Admin
+Route::prefix('admin')->middleware('auth', 'admin')
     ->group(function() {
         Route::get('/', [DashboardController::class,'index'])->name('admin-dashboard');
          Route::resource('category', CategoryController::class);
-//         Route::resource('gallery', GalleryController::class);
-//         Route::resource('transaction', TransactionController::class);
+         Route::resource('user', UserController::class);
+         Route::resource('product', ProductController::class);
+         Route::resource('product-gallery', ProductGalleryController::class);
+
  });
 Auth::routes();
 

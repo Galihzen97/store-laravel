@@ -14,7 +14,8 @@
     <div class="dashboard-content">
       <div class="row">
         <div class="col-12">
-          <form action="">
+          <form action="{{ Route('dashboard-setting-redirect', 'dashboard-setting-store')}}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="card">
               <div class="card-body">
                 <div
@@ -28,17 +29,27 @@
                       <input
                         type="text"
                         class="form-control"
-                        value="Galih Zen Store"
+                        name="store_name"
+                        value="{{ $user->store_name ? $user->store_name : $user->name }}"
                       />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Nama Kategory</label>
-                      <select name="category" class="form-control">
-                        <option value="">--Pilih Kategory--</option>
-                        <option value="">Snaker</option>
-                        <option value="">Furniture</option>
+                      <select name="categories_id" class="form-control">
+                        @if ($user->category)
+                        <option value="{{ $user->categories_id }}">
+                            {{ $user->category->name }}
+                        </option>
+                    @else
+                        <option value="">
+                            Belum Ada
+                        </option>
+                    @endif
+                        @foreach ($categories as $category)
+                        <option value="{{$category->id}}">{{ $category->name}}</option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
@@ -54,9 +65,10 @@
                         <input
                           type="radio"
                           class="custom-control-input"
-                          name="is_store_open"
+                          name="status"
                           id="storeOpenTrue"
-                          value="true"
+                          value="1"
+                          {{ $user->status == 1 ? 'checked':''}}
                         />
                         <label
                           for="storeOpenTrue"
@@ -70,9 +82,10 @@
                         <input
                           type="radio"
                           class="custom-control-input"
-                          name="is_store_open"
+                          name="status"
                           id="storeOpenFalse"
-                          value="false"
+                          value= "0"
+                          {{ $user->status == 0 || $user->status == NULL ? 'checked':''}}
                         />
                         <label
                           for="storeOpenFalse"
@@ -89,7 +102,7 @@
                   data-aos-delay="300"
                 >
                   <div class="col text-right mt-5">
-                    <button class="btn btn-success px-5">
+                    <button type="submit" class="btn btn-success px-5"> 
                       Save Now
                     </button>
                   </div>

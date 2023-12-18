@@ -52,78 +52,47 @@
               role="tabpanel"
               aria-labelledby="pills-home-tab"
             >
-              <a
-                href="/dashboard-transactions-details.html"
-                class="card card-list d-block"
-              >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-1">
-                      <img
-                        src="/images/dashboard-icon-product-1.png"
-                        alt=""
-                      />
-                    </div>
-                    <div class="col-md-4">Shirup Marzzan</div>
-                    <div class="col-md-3">Galih Zen Salim</div>
-                    <div class="col-md-3">12 Januari, 2020</div>
-                    <div class="col-md-1 d-none d-md-block">
-                      <img
-                        src="/images/dashboard-arrow-right.svg"
-                        alt=""
-                      />
-                    </div>
-                  </div>
+
+            @forelse ($selltransactions as $transaction)
+            <a
+            href="{{ Route ('dashboard-transactions-details', $transaction->id)}}"
+            class="card card-list d-block"
+          >
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-1">
+                  <img
+                  style="max-width: 100%"
+                  src="{{ Storage::url($transaction->product->galleries->first()->photos ?? '')}}"
+                    alt=""
+                  />
                 </div>
-              </a>
-              <a
-                href="/dashboard-transactions-details.html"
-                class="card card-list d-block"
-              >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-1">
-                      <img
-                        src="/images/dashboard-icon-product-2.png"
-                        alt=""
-                      />
-                    </div>
-                    <div class="col-md-4">Macbook Pro</div>
-                    <div class="col-md-3">Prayogo Pangestu</div>
-                    <div class="col-md-3">12 Mey, 2020</div>
-                    <div class="col-md-1 d-none d-md-block">
-                      <img
-                        src="/images/dashboard-arrow-right.svg"
-                        alt=""
-                      />
-                    </div>
-                  </div>
+                <div class="col-md-4">{{$transaction->product->name ?? ''}}</div>
+                <div class="col-md-3">{{$transaction->transaction->user->name ?? ''}}</div>
+                <div class="col-md-3">{{$transaction->created_at->isoFormat('D MMMM Y') ?? ''}}</div>
+                <div class="col-md-1 d-none d-md-block">
+                  <img
+                    src="/images/dashboard-arrow-right.svg"
+                    alt=""
+                  />
                 </div>
-              </a>
-              <a
-                href="/dashboard-transactions-details.html"
-                class="card card-list d-block"
-              >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-1">
-                      <img
-                        src="/images/dashboard-icon-product-3.png"
-                        alt=""
-                      />
-                    </div>
-                    <div class="col-md-4">Sofa Ternyaman</div>
-                    <div class="col-md-3">Arif Pujianto</div>
-                    <div class="col-md-3">12 Januari, 2020</div>
-                    <div class="col-md-1 d-none d-md-block">
-                      <img
-                        src="/images/dashboard-arrow-right.svg"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </a>
+              </div>
+            </div>
+          </a>
+            @empty
+            <div class="row">
+              <div class="col-12 py-5 text-center">
+                No Transaction Sell Founds
+              </div>
+            </div>
+            @endforelse
+            <section class="store-pagination">
+              <div class="container">
+              <div class="custom-pagination" >
+                  {{ $selltransactions->links('pagination::bootstrap-4') }}
+              </div>
+              </div>
+            </section>
             </div>
             <div
               class="tab-pane fade"
@@ -131,54 +100,49 @@
               role="tabpanel"
               aria-labelledby="pills-profile-tab"
             >
-              <a
-                href="/dashboard-transactions-details.html"
-                class="card card-list d-block"
-              >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-1">
-                      <img
-                        src="/images/dashboard-icon-product-1.png"
-                        alt=""
-                      />
-                    </div>
-                    <div class="col-md-4">Shirup Marzzan</div>
-                    <div class="col-md-3">Galih Zen Salim</div>
-                    <div class="col-md-3">12 Januari, 2020</div>
-                    <div class="col-md-1 d-none d-md-block">
-                      <img
-                        src="/images/dashboard-arrow-right.svg"
-                        alt=""
-                      />
-                    </div>
+           
+            @forelse ($buytransactions as $transaction)
+            <a
+            href="{{ Route ('dashboard-transactions-details', $transaction->id)}}"
+            class="card card-list d-block"
+          >
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-1">
+                  <img
+                  style="max-width: 100%"
+                  src="{{ Storage::url($transaction->product->galleries->first()->photos ?? '')}}"
+                    alt=""
+                  />
+                </div>
+                <div class="col-md-4">{{$transaction->product->name ?? ''}}</div>
+                <div class="col-md-3">
+                  {{ $transaction->product->user->store_name ?? '' }}
+                </div>
+                <div class="col-md-3">{{$transaction->created_at->isoFormat('D MMMM Y') ?? ''}}</div>
+                <div class="col-md-1 d-none d-md-block">
+                  <img
+                    src="/images/dashboard-arrow-right.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </a>
+            @empty
+                <div class="row">
+                  <div class="col-12 py-5 text-center">
+                    No Transaction Buy Founds
                   </div>
                 </div>
-              </a>
-              <a
-                href="/dashboard-transactions-details.html"
-                class="card card-list d-block"
-              >
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-1">
-                      <img
-                        src="/images/dashboard-icon-product-2.png"
-                        alt=""
-                      />
-                    </div>
-                    <div class="col-md-4">Macbook Pro</div>
-                    <div class="col-md-3">Prayogo Pangestu</div>
-                    <div class="col-md-3">12 Mey, 2020</div>
-                    <div class="col-md-1 d-none d-md-block">
-                      <img
-                        src="/images/dashboard-arrow-right.svg"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </a>
+            @endforelse
+            <section class="store-pagination">
+              <div class="container">
+              <div class="custom-pagination" >
+                  {{ $buytransactions->links('pagination::bootstrap-4') }}
+              </div>
+              </div>
+            </section>
             </div>
           </div>
         </div>

@@ -31,10 +31,18 @@
         font-weight: normal;
         font-size: 18px;
         color: #0c0d36;
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+        }
     }
     .products-price {
         font-weight: 500;
         font-size: 16px;
         color: #ff7158;
+
+        @include media-breakpoint-down(md) {
+            font-size: 12px;
+            font-weight: 500;
+        }
     }
 }

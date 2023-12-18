@@ -17,7 +17,7 @@
             <div class="card mb-2">
               <div class="card-body">
                 <div class="dashboard-card-title">Customer</div>
-                <div class="dashboard-card-subtitle">22,908</div>
+                <div class="dashboard-card-subtitle">{{$customer}}</div>
               </div>
             </div>
           </div>
@@ -26,7 +26,7 @@
               <div class="card-body">
                 <div class="dashboard-card-title">Revenue</div>
                 <div class="dashboard-card-subtitle">
-                  Rp. 20.000.0000
+                  Rp. {{number_format($revenue,0)}}
                 </div>
               </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="card mb-2">
               <div class="card-body">
                 <div class="dashboard-card-title">Transactions</div>
-                <div class="dashboard-card-subtitle">22,000,99</div>
+                <div class="dashboard-card-subtitle">{{$transaction_count}}</div>
               </div>
             </div>
           </div>
@@ -44,21 +44,22 @@
         <div class="row mt-3">
           <div class="col-12 mt-2">
             <h5 class="mb-3">Recent Transactions</h5>
+            @forelse ($transaction_data as $transaction)
             <a
-              href="/dashboard-transactions-details.html"
+              href="{{ Route ('dashboard-transactions-details', $transaction->id)}}"
               class="card card-list d-block"
-            >
+             >
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-1">
-                    <img
-                      src="/images/dashboard-icon-product-1.png"
+                    <img  class="w-100 mb-2"
+                      src="{{ Storage::url($transaction->product->galleries->first()->photos ?? '')}}"
                       alt=""
                     />
                   </div>
-                  <div class="col-md-4">Shirup Marzzan</div>
-                  <div class="col-md-3">Galih Zen Salim</div>
-                  <div class="col-md-3">12 Januari, 2020</div>
+                  <div class="col-md-4">{{$transaction->product->name ?? ''}}</div>
+                  <div class="col-md-3">  {{ $transaction->transaction->user->name ?? ''  }}</div>
+                  <div class="col-md-3">{{$transaction->created_at->isoFormat('D MMMM Y') ?? ''}}</div>
                   <div class="col-md-1 d-none d-md-block">
                     <img
                       src="/images/dashboard-arrow-right.svg"
@@ -68,54 +69,21 @@
                 </div>
               </div>
             </a>
-            <a
-              href="/dashboard-transactions-details.html"
-              class="card card-list d-block"
-            >
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-1">
-                    <img
-                      src="/images/dashboard-icon-product-2.png"
-                      alt=""
-                    />
-                  </div>
-                  <div class="col-md-4">Macbook Pro</div>
-                  <div class="col-md-3">Prayogo Pangestu</div>
-                  <div class="col-md-3">12 Mey, 2020</div>
-                  <div class="col-md-1 d-none d-md-block">
-                    <img
-                      src="/images/dashboard-arrow-right.svg"
-                      alt=""
-                    />
-                  </div>
-                </div>
+                
+            @empty
+          <div class="row">
+            <div class="col-12 text-center">
+              Not Founds Recent Transactions
+            </div>
+          </div>     
+            @endforelse
+            <section class="store-pagination">
+              <div class="container">
+              <div class="custom-pagination" >
+                  {{ $transaction_data->links('pagination::bootstrap-4') }}
               </div>
-            </a>
-            <a
-              href="/dashboard-transactions-details.html"
-              class="card card-list d-block"
-            >
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-1">
-                    <img
-                      src="/images/dashboard-icon-product-3.png"
-                      alt=""
-                    />
-                  </div>
-                  <div class="col-md-4">Sofa Ternyaman</div>
-                  <div class="col-md-3">Arif Pujianto</div>
-                  <div class="col-md-3">12 Januari, 2020</div>
-                  <div class="col-md-1 d-none d-md-block">
-                    <img
-                      src="/images/dashboard-arrow-right.svg"
-                      alt=""
-                    />
-                  </div>
-                </div>
               </div>
-            </a>
+            </section>
           </div>
         </div>
       </div>

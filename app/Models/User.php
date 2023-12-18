@@ -21,6 +21,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'roles',
+        'store_name',
+        'categories_id',
+        'status',
+        'address_one',
+        'address_two',
+        'provinces_id',
+        'regencies_id',
+        'zip_code',
+        'country',
+        'phone_number'
     ];
 
     /**
@@ -41,4 +52,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function category() {
+        return $this->belongsTo(Category::class, 'categories_id', 'id');
+    }
+
 }
+

@@ -13,84 +13,36 @@
         </div>
       </div>
       <div class="row">
+        @php
+          $incrementCategory = 0
+        @endphp
+        @forelse ($categories as $category)
         <div
-          class="col-3 col-md-3 col-lg-2"
-          data-aos="fade-up"
-          data-aos-delay="100"
+        class="col-3 col-md-3 col-lg-2"
+        data-aos="fade-up"
+        data-aos-delay="{{ $incrementCategory+= 100}}"
         >
-          <a href="#" class="component-categories d-block">
-            <div class="categories-image">
-              <img src="/images/Group 14.svg" class="w-100 img-fluid" alt="" />
-              <p class="categories-text">Gadgets</p>
-            </div>
-          </a>
+        <a href="{{ route('categories-detail', $category->slug)}}" class="component-categories d-block">
+          <div class="categories-image">
+            <img src="{{  Storage::url($category->photo)}}" class="w-100 img-fluid" alt="" />
+            <p class="categories-text">{{ $category->name  }}</p>
+          </div>
+        </a>
         </div>
-        <div
-          class="col-3 col-md-3 col-lg-2"
+        @empty
+          <div class="col-12 text-center py-5" 
           data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <a href="#" class="component-categories d-block">
-            <div class="categories-image">
-              <img src="/images/Group 15.svg" class="w-100 img-fluid" alt="" />
-              <p class="categories-text">Furiture</p>
-            </div>
-          </a>
-        </div>
-        <div
-          class="col-3 col-md-3 col-lg-2"
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
-          <a href="#" class="component-categories d-block">
-            <div class="categories-image">
-              <img src="/images/Group 16.svg" class="w-100 img-fluid" alt="" />
-              <p class="categories-text">Makeup</p>
-            </div>
-          </a>
-        </div>
-        <div
-          class="col-3 col-md-3 col-lg-2"
-          data-aos="fade-up"
-          data-aos-delay="400"
-        >
-          <a href="#" class="component-categories d-block">
-            <div class="categories-image">
-              <img src="/images/Group 17.svg" class="w-100 img-fluid" alt="" />
-              <p class="categories-text">Sneaker</p>
-            </div>
-          </a>
-        </div>
-        <div
-          class="col-3 col-md-3 col-lg-2"
-          data-aos="fade-up"
-          data-aos-delay="500"
-        >
-          <a href="#" class="component-categories d-block">
-            <div class="categories-image">
-              <img src="/images/Group 18.svg" class="w-100 img-fluid" alt="" />
-              <p class="categories-text">Tools</p>
-            </div>
-          </a>
-        </div>
-        <div
-          class="col-3 col-md-3 col-lg-2"
-          data-aos="fade-up"
-          data-aos-delay="600"
-        >
-          <a href="#" class="component-categories d-block">
-            <div class="categories-image">
-              <img src="/images/Group 20.svg" class="w-100 img-fluid" alt="" />
-              <p class="categories-text">Baby</p>
-            </div>
-          </a>
-        </div>
+          data-aos-delay="100">
+            No Categories Founds
+          </div>
+        @endforelse
+      
       </div>
     </div>
   </section>
   <!-- Trend Categories end -->
 
-  <!-- New Product start -->
+  <!-- All Product start -->
   <section class="store-new-products">
     <div class="container">
       <div class="row">
@@ -99,137 +51,51 @@
         </div>
       </div>
       <div class="row">
+        @php
+            $incrementProduct = 100
+        @endphp
+        @forelse ($products as $product)
         <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="100"
+        class="col-6 col-md-4 col-lg-3"
+        data-aos="fade-up"
+        data-aos-delay="{{ $incrementProduct+= 100}}"
         >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products.jpg')"
-              ></div>
+        <a href="{{ route('detail', $product->slug)}}" class="components-products d-block">
+          <div class="products-thumbnail">
+            <div 
+            class="products-image" 
+            style="@if($product->galleries->isNotEmpty()) 
+                    background-image: url('{{ Storage::url($product->galleries->first()->photos) }}') 
+                   @else 
+                    background-color: #eee 
+                   @endif;">
             </div>
-            <div class="products-text">Apple Watch 4</div>
-            <div class="products-price">Rp. 4.000.000</div>
-          </a>
+          </div>
+          <div class="products-text">{{$product->name}}</div>
+          <div class="products-price">Rp. {{ number_format($product->price, 0)}}</div>
+        </a>
         </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products1.jpg')"
-              ></div>
+        @empty
+            <div class="col-12 text-center py-5" 
+            data-aos="fade-up"
+            data-aos-delay="100">
+              No Products Founds
             </div>
-            <div class="products-text">Orange Buggota</div>
-            <div class="products-price">Rp. 3.000.000</div>
-          </a>
-        </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products2.jpg')"
-              ></div>
-            </div>
-            <div class="products-text">Sofa Ternyaman</div>
-            <div class="products-price">Rp. 5.000.000</div>
-          </a>
-        </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="400"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products3.jpg')"
-              ></div>
-            </div>
-            <div class="products-text">Bubuk Maketti</div>
-            <div class="products-price">Rp. 40.000</div>
-          </a>
-        </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="500"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products4.jpg')"
-              ></div>
-            </div>
-            <div class="products-text">Tatakan Gelas</div>
-            <div class="products-price">Rp. 45.000</div>
-          </a>
-        </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="600"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products5.jpg')"
-              ></div>
-            </div>
-            <div class="products-text">Mavic KW</div>
-            <div class="products-price">Rp. 300.000</div>
-          </a>
-        </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="700"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products6.jpg')"
-              ></div>
-            </div>
-            <div class="products-text">Black Edition Nike</div>
-            <div class="products-price">Rp. 8.000.000</div>
-          </a>
-        </div>
-        <div
-          class="col-6 col-md-4 col-lg-3"
-          data-aos="fade-up"
-          data-aos-delay="800"
-        >
-          <a href="/detail.html" class="components-products d-block">
-            <div class="products-thumbnail">
-              <div
-                class="products-image"
-                style="background-image: url('/images/products7.jpg')"
-              ></div>
-            </div>
-            <div class="products-text">Monkey Toys</div>
-            <div class="products-price">Rp. 45.000</div>
-          </a>
-        </div>
+        @endforelse
       </div>
     </div>
   </section>
+  <section class="store-pagination">
+    <div class="container">
+    <div class="custom-pagination"
+        data-aos="fade-down"
+        data-aos-delay="200">
+       {{$products->links('pagination::bootstrap-4')}}
+    </div>
+  </div>
+  </section>
+  
+ 
   <!-- New Product end -->
 </div>
 

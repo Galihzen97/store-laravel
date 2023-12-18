@@ -1,18 +1,28 @@
 @extends('layouts.dashboard')
 @section('title')
-    Galih Store | Products Details
+    Cafamoon | {{ $products->name}}
 @endsection
 @section('content')
 <div class="section-content section-dashboard-home"data-aos="fade-up">
   <div class="container-fluid">
     <div class="dashboard-heading">
-      <h2 class="dashboard-title">Jam Alexander Crintine type 340</h2>
+      <h2 class="dashboard-title">{{ $products->name}}</h2>
       <p class="dashboard-subtitle">Product Details</p>
     </div>
     <div class="dashboard-content">
       <div class="row">
         <div class="col-12">
-          <form action="">
+          @if ($errors->any())
+          <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+          </div>
+          @endif
+          <form action="{{Route ('dashboard-products-update', $products->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="card">
               <div class="card-body">
                 <div
@@ -26,7 +36,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        value="Jam Alexander Crintine type 340"
+                        name="name" value="{{ $products->name}}"
                       />
                     </div>
                   </div>
@@ -35,26 +45,27 @@
                       <label>Price</label>
                       <input
                         type="number"
+                        name="price"
                         class="form-control"
-                        value="120000"
+                        value="{{$products->price}}"
                       />
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Category</label>
-                      <select name="category" class="form-control">
-                        <option value="">--Pilih Kategory--</option>
-                        <option value="">Snaker</option>
-                        <option value="">Furniture</option>
-                        <option value="" selected>Elektronik</option>
+                      <select name="categories_id" class="form-control">
+                        <option value="{{ $products->categories_id}}">{{$products->category->name}}</option>
+                        @foreach ($categories as $category)
+                        <option value="{{$category->id}}">{{ $category->name}}</option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Description</label>
-                      <textarea id="editor"></textarea>
+                      <textarea name="description" id="editor">{!! $products->description !!}</textarea>
                     </div>
                   </div>
                 </div>
@@ -68,7 +79,7 @@
                       class="btn btn-success px-5"
                       type="submit"
                     >
-                      Create Now
+                      Update Now
                     </button>
                   </div>
                 </div>
@@ -82,14 +93,15 @@
           <div class="card">
             <div class="card-body">
               <div class="row">
+                @foreach ($products->galleries as $gallery)
                 <div class="col-6 col-md-4">
                   <div class="gallery-container">
                     <img
-                      src="/images/products.jpg"
+                      src="{{Storage::url($gallery->photos ?? '')}}"
                       class="w-100"
                       alt=""
                     />
-                    <a href="#">
+                    <a href="{{ Route('dashboard-products-gallery-delete', $gallery->id)}}">
                       <img
                         class="delete-gallery"
                         src="{{ url('/images/icon-delete.svg')}}"
@@ -98,67 +110,27 @@
                     </a>
                   </div>
                 </div>
-                <div class="col-6 col-md-4">
-                  <div class="gallery-container">
-                    <img
-                      src="/images/products1.jpg"
-                      class="w-100"
-                      alt=""
-                    />
-                    <a href="#">
-                      <img
-                        class="delete-gallery"
-                        src="/images/icon-delete.svg"
-                        alt=""
-                      />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="gallery-container">
-                    <img
-                      src="/images/products2.jpg"
-                      class="w-100"
-                      alt=""
-                    />
-                    <a href="#">
-                      <img
-                        class="delete-gallery"
-                        src="/images/icon-delete.svg"
-                        alt=""
-                      />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="gallery-container">
-                    <img
-                      src="/images/products3.jpg"
-                      class="w-100"
-                      alt=""
-                    />
-                    <a href="#">
-                      <img
-                        class="delete-gallery"
-                        src="/images/icon-delete.svg"
-                        alt=""
-                      />
-                    </a>
-                  </div>
-                </div>
+
+                @endforeach
+               
                 <div class="col-12">
-                  <input
+                  <form action="{{ Route('dashboard-products-gallery-upload')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden"  name="products_id" value="{{ $products->id}}">
+                    <input
                     type="file"
                     id="file"
+                    name="photos"
                     style="display: none"
-                    multiple
+                    onchange="form.submit()"
                   />
                   <button
-                    class="btn btn-secondary btn-block mt-3"
+                    class="btn btn-secondary btn-block mt-3" type="button"
                     onclick="thisUploadfile()"
                   >
                     Add Photo
                   </button>
+                  </form>
                 </div>
               </div>
             </div>

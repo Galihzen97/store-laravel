@@ -1,6 +1,6 @@
 @extends('layouts.success')
 @section('title')
-    Galih Store | Success Register
+    Cafamoon | Success Register
 @endsection
 @section('content')
 <div class="page-content page-success">
@@ -12,7 +12,7 @@
                     <h2>Welcome To Store</h2>
                     <p>Kamu sudah berhasil terdaftar <br> bersama kami. Let’s grow up now.</p>
                     <div class="">
-                        <a href="/dashboard.html" class="btn btn-success w-50 mt-4">My Dashboard</a>
+                        <a href="{{Route('dashboard')}}" class="btn btn-success w-50 mt-4">My Dashboard</a>
                         <a href="{{ Route ('home')}}" class="btn btn-signup  w-50 mt-2">Go to Shopping</a>
                     </div>
                 </div>

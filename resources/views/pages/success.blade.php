@@ -12,8 +12,8 @@
                     <h2>Transaction Proccesed!</h2>
                     <p>Silahkan tunggu konfirmasi email dari kami dan kami akan menginformasikan resi secepat mungkin!</p>
                     <div class="">
-                        <a href="/dashboard.html" class="btn btn-success w-50 mt-4">My Dashboard</a>
-                        <a href="/index.html" class="btn btn-signup  w-50 mt-2">Go to shipping</a>
+                        <a href="/dashboard" class="btn btn-success w-50 mt-4">My Dashboard</a>
+                        <a href="/" class="btn btn-signup  w-50 mt-2">Go to shipping</a>
                     </div>
                 </div>
 

@@ -24,45 +24,44 @@
         <!-- Side Bar -->
         <div class="border-right sidebar-images" id="sidebar-wrapper">
           <div class="sidebar-heading text-center">
+          <a href="{{route('home')}}">
             <img src="/images/dashboard_logo.svg" class="my-4" />
+          </a>
           </div>
           <div class="list-group list-group-flush">
             <a
-              class="list-group-item list-group-item-action"
+              class="list-group-item list-group-item-action {{ request()->is('dashboard') ? 'active' : ''}}"
               href="{{ Route ('dashboard')}}"
             >
               Dashboard
             </a>
             <a
-              class="list-group-item list-group-item-action"
+              class="list-group-item list-group-item-action {{ request()->is('dashboard/products*') ? 'active' : ''}}"
               href="{{ Route ('dashboard-products')}}"
             >
               My Products
             </a>
             <a
-              class="list-group-item list-group-item-action"
+              class="list-group-item list-group-item-action {{ request()->is('dashboard/transactions*') ? 'active' : ''}}"
               href="{{ Route ('dashboard-transactions')}}"
             >
               Transactions
             </a>
             <a
-              class="list-group-item list-group-item-action"
+              class="list-group-item list-group-item-action {{ request()->is('dashboard/setting*') ? 'active' : ''}}"
               href="{{ Route ('dashboard-setting-store')}}"
             >
               Store Setting
             </a>
             <a
-              class="list-group-item list-group-item-action"
+              class="list-group-item list-group-item-action {{ request()->is('dashboard/account') ? 'active' : ''}}"
               href="{{ Route ('dashboard-setting-account')}}"
             >
               My Account
             </a>
-            <a
-              class="list-group-item list-group-item-action"
-              href="{{ Route ('home')}}"
-            >
-              Sign Out
-            </a>
+            <button type="button"  class="list-group-item list-group-item-action {{ request()->is('dashboard/account') ? 'active' : ''}}" data-toggle="modal" data-target="#logoutModal">
+              Logout
+            </button>
           </div>
         </div>
 
@@ -100,23 +99,33 @@
                         class="rounded-circle mr-2 profile-picture"
                         alt=""
                       />
-                      Hi, Galih Zen
+                      Halo, {{ Auth::user()->name}}
                     </a>
                     <div class="dropdown-menu">
                       <a href="{{ Route ('dashboard')}}" class="dropdown-item"
                         >Dashboard</a
                       >
-                      <a href="/dashboard-account.html" class="dropdown-item"
+                      <a href="/dashboard/account" class="dropdown-item"
                         >Profil</a
                       >
                       <div class="dropdown-divider"></div>
-                      <a href="{{ Route ('logout')}}" class="dropdown-item">Logout</a>
+                      <button type="button" class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                        Logout
+                      </button>
                     </div>
                   </li>
                   <li class="nav-item">
-                    <a href="{{ Route('cart')}}" class="nav-link d-inline-block mt-2">
-                      <img src="/images/ic_keranjang_isi.svg" alt="" />
-                      <div class="card-badge">3</div>
+                    <a href="{{ Route('cart')}}"  class="nav-link d-inline-block mt-2">
+                      @php
+                      $carts = \App\Models\Cart::where('users_id', Auth::user()->id)->count();
+                      @endphp
+                      @if ( $carts > 0 )
+                      <img src="/images/ic_keranjang_isi.svg" alt="">
+                      <div class="card-badge">{{ $carts}}</div>
+                      @else
+                      <img src="/images/ic_keranjang.svg" alt="">
+                      @endif
+                        
                     </a>
                   </li>
                 </ul>
@@ -130,23 +139,26 @@
                       id="navbarDropdown"
                       role="button"
                       data-toggle="dropdown"
-                      >Hi, Galih Zen <b>></b></a
+                      >Halo, {{ Auth::user()->name}} , ▶️</a
                     >
                     <div class="dropdown-menu">
-                      <a href="/dashboard.html" class="dropdown-item"
+                      <a href="/dashboard" class="dropdown-item"
                         >Dashboard</a
                       >
                       <a href="{{ Route ('cart')}}" class="dropdown-item"
                         >Profil</a
                       >
                       <div class="dropdown-divider"></div>
-                      <a href="{{ Route('logout')}}" class="dropdown-item">Logout</a>
+                      <button type="button" class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                        Logout
+                      </button>
                     </div>
                   </li>
                   <li class="nav-item">
-                    <a href="{{ Route('cart')}}" class="nav-link d-inline-block"
-                      >Cart</a
-                    >
+                    @php
+                    $carts = \App\Models\Cart::where('users_id', Auth::user()->id)->count();
+                    @endphp
+                      <a href="{{ Route('cart')}}" class="nav-link d-inline-block {{ request()->is('cart*') ? 'active' : ''}}">Cart, <span class="text-danger">{{ $carts}}</span></a>
                   </li>
                 </ul>
               </div>
@@ -159,6 +171,41 @@
         </div>
       </div>
     </div>
+
+      {{--  Modal  --}}
+@auth
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 20px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"
+        style=" background: linear-gradient(90deg, red, blue);
+        -webkit-background-clip: text;
+        color: transparent;
+        display: inline-block;">Cafamoon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hai <b>{{ Auth::user()->name}}</b>, Apakah anda yakin untuk logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-dismiss="modal"
+        style="
+        border-radius: 20px;">Close</button>
+        <a href="{{ route('logout') }}"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+          class="btn btn-success" style="border-radius: 20px;">Logout</a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+          </form> 
+        
+      </div>
+    </div>
+  </div>
+</div>
+@endauth
 
     <!-- Bootstrap core JavaScript -->
     <script src="/vendor/jquery/jquery.slim.min.js"></script>

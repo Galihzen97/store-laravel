@@ -47,10 +47,45 @@
       <div class="row pt-4">
         <div class="col-12 text-center">
           <p class="pt-4 pb-2">
-            2023 Copyright <span> <a href="#">Galih Store</a> </span> - All
+            2023 Copyright <span> <a href="{{ route('home')}}">CafaMoon</a> </span> - All
             right reserved.
           </p>
         </div>
       </div>
     </div>
   </footer>
+
+  {{--  Modal  --}}
+@auth
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 20px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"
+        style=" background: linear-gradient(90deg, red, blue);
+        -webkit-background-clip: text;
+        color: transparent;
+        display: inline-block;">Cafamoon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hai <b>{{ Auth::user()->name}}</b>, Apakah anda yakin untuk logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-dismiss="modal"
+        style="
+        border-radius: 20px;">Close</button>
+        <a href="{{ route('logout') }}"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+          class="btn btn-success" style="border-radius: 20px;">Logout</a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+          </form> 
+        
+      </div>
+    </div>
+  </div>
+</div>
+@endauth
